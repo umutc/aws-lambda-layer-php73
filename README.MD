@@ -1,15 +1,13 @@
 # AWS Lambda PHP Hello World
 
-The basics of using [Serverless Framework][1] for AWS Lambda PHP applications.
+The basics of using [SAM Cli][1] for AWS Lambda PHP applications.
 
-## Notes
-
-1. Install Serverless Framework by following the [Quick Start][2]
+## Deploy
+1. Install SAM Cli by following the [Quick Start][2]
 2. Set up your [AWS credentials][3]
-3. Create php binary by following steps in [`doc/create_php_binary.md`][4]
-4. Write your serverless application (!) - the default is in `handler.php`
-5. Run `sls deploy` to deploy to Lambda
-6. Run `sls invoke -f hello -l` to invoke your function
+3. Create php binary by following steps in [`doc/create_php_binary.md`][4] or use [Php 7.3.1][5] or just put the yml this projects [ARN][6] 
+4. Write your serverless application (!) - the default is in `src/handlers/hello.php`
+5. Run `./deploy.sh` to deploy to Lambda
 
 ## PHP handler function signature
 Handler: filename.functionName
@@ -27,7 +25,9 @@ Hello world looks like:
     }
 
 
-[1]: https://serverless.com
-[2]: https://serverless.com/framework/docs/providers/aws/guide/quick-start/
+[1]: https://github.com/awslabs/aws-sam-cli
+[2]: https://docs.aws.amazon.com/en_us/serverless-application-model/latest/developerguide/serverless-quick-start.html
 [3]: https://serverless.com/framework/docs/providers/aws/guide/credentials/
 [4]: doc/create_php_binary.md
+[5]: layer/php/php
+[6]: 'arn:aws:lambda:eu-central-1:303814004728:layer:aws-lambda-layer-php-7-3-1:3'
