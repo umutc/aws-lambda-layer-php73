@@ -10,7 +10,7 @@ fi
 
 # Update packages and install needed compilation dependencies
 sudo yum update -y
-sudo yum install autoconf bison gcc gcc-c++ libcurl-devel libxml2-devel -y
+sudo yum install autoconf make libc-dev pkg-config bison gcc gcc-c++ libcurl-devel libxml2-devel -y
 
 # Compile OpenSSL v1.0.1 from source, as Amazon Linux uses a newer version than the Lambda Execution Environment, which
 # would otherwise produce an incompatible binary.
@@ -26,6 +26,11 @@ cd php-src-php-${PHP_VERSION}
 
 # Compile PHP 7.3.0 with OpenSSL 1.0.1 support, and install to /home/ec2-user/php-7-bin
 ./buildconf --force
-./configure --prefix=/home/ec2-user/php-7-bin/ --with-openssl=/usr/local/ssl --with-curl --with-zlib
+./configure --prefix=/home/ec2-user/php-7-bin/ --with-openssl=/usr/local/ssl --with-curl --with-zlib --enable-mbstring=all --enable-exif --enable-intl --enable-zip
 export LC_ALL=en_US.UTF-8
 make install
+
+# Install stats extension
+export LC_ALL=C
+export LANG=C
+/home/ec2-user/php-7-bin/bin/pear install pecl/stats-2.0.3

@@ -1,0 +1,6 @@
+{
+    "require": {
+        "umutc/array-statistics": "^1.0",
+        "aws/aws-sdk-php": "^3.85"
+    }
+}

@@ -9,6 +9,8 @@
  *     - Catch any Throwables and write to error log
  */
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 /**
  * PHP class to interact with AWS Runtime API
  */

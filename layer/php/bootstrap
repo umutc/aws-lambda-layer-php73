@@ -7,4 +7,4 @@
 cd $LAMBDA_TASK_ROOT
 
 # execute the runtime
-/opt/php /opt/runtime.php
+/opt/php -c /opt/php.ini /opt/runtime.php

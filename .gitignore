@@ -1,6 +1,8 @@
 # Layer
 # layer/php/php
 layer/php/php.zip
+layer/php/vendor
 
 # mac info file
-.DS_Store
+**/.DS_Store
+**/.idea
