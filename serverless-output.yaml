@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Magistum Serverless PHP 7.3.1
+Resources:
+  HelloPhp73:
+    Properties:
+      CodeUri: s3://magistum-sam/0dbcebf1080bcffc055b5d6706a137c3
+      Description: This is the hello world function from lambda php 7.3.1 layer
+      FunctionName:
+        Fn::Sub: ${AWS::StackName}-hello
+      Handler: hello.hello
+      Layers:
+      - Fn::Sub: arn:aws:lambda:eu-central-1:303814004728:layer:aws-lambda-layer-php-7-3-1:3
+      MemorySize: 128
+      Runtime: provided
+      Timeout: 30
+      Tracing: Active
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31
