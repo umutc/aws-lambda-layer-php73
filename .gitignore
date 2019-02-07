@@ -6,3 +6,6 @@ layer/php/vendor
 # mac info file
 **/.DS_Store
 **/.idea
+
+# Output
+serverless-output.yaml

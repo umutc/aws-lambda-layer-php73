@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0bcb5fa8991105bfe27897773ad9e14",
+    "content-hash": "d64d479e0e16fa1914bfaee43c852070",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -416,42 +416,6 @@
             ],
             "description": "A polyfill for getallheaders.",
             "time": "2016-02-11T07:05:27+00:00"
-        },
-        {
-            "name": "umutc/array-statistics",
-            "version": "1.0.2-stable",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/umutc/array-statistics.git",
-                "reference": "660ce983ff5ee7593d04d0f7ea955fa8777db87f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/umutc/array-statistics/zipball/660ce983ff5ee7593d04d0f7ea955fa8777db87f",
-                "reference": "660ce983ff5ee7593d04d0f7ea955fa8777db87f",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "ArrayStats": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Umut ÇELİK",
-                    "email": "mail@umutcelik.com.tr"
-                }
-            ],
-            "description": "This is the statistics library for educational purposes.",
-            "time": "2019-01-12T22:10:55+00:00"
         }
     ],
     "packages-dev": [],
