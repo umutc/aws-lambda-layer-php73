@@ -111,6 +111,15 @@ class ArrayStats
     }
 
     /**
+     * Varyans
+     * @return float
+     */
+    public function variance(): float
+    {
+        return stats_variance($this->array);
+    }
+
+    /**
      * Frekans
      * @return float
      */
