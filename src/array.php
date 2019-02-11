@@ -78,8 +78,12 @@ function item_analysis($eventData)
     /* Chunk the sorted matrix 27% top and 27% bottom  */
     $top27 = array_slice($matrix, 0, (int)((27 / 100) * count($data->esssr)), true);
     $bottom27 = array_slice($matrix, (count($data->esssr) - (int)((27 / 100) * count($data->esssr))), (int)((27 / 100) * count($data->esssr)), true);
+    $questions = [];
+    foreach ($data->questions as $question) {
+        $questions[$question->id] = $question;
+    }
 
-    return array_map(function ($question_id) use ($matrix, $top27, $bottom27) {
+    $items = array_map(function ($question_id) use ($matrix, $top27, $bottom27, $questions) {
         $columnTotal = array_column($matrix, $question_id);
         $columnTop27 = array_column($top27, $question_id);
         $columnBottom27 = array_column($bottom27, $question_id);
@@ -95,55 +99,56 @@ function item_analysis($eventData)
         $rjx = ($totalSumTop27 - $totalSumBottom27) / $countTop27;
         $arrayStats = new ArrayStats($columnTotal);
 
-        $result = [
+        return [
             'question_id' => $question_id,
-            'data' => (object)[
-                'totalSum' => (object)[
+            'question' => $questions[$question_id],
+            'data' => [
+                'totalSum' => [
                     'id' => 'totalSum',
                     'title' => 'Maddeyi toplam doğru cevaplayan öğrenci sayısı',
                     'value' => $totalSum
                 ],
-                'totalSumPersentage' => (object)[
+                'totalSumPersentage' => [
                     'id' => 'totalSumPersentage',
                     'title' => 'Madde başarı yüzdesi',
                     'value' => $totalSumPersentage
                 ],
-                'totalSumTop27' => (object)[
+                'totalSumTop27' => [
                     'id' => 'totalSumTop27',
                     'title' => 'Maddeyi üst grupta doğru cevaplayan öğrenci sayısı',
                     'value' => $totalSumTop27
                 ],
-                'totalSumBottom27' => (object)[
+                'totalSumBottom27' => [
                     'id' => 'totalSumBottom27',
                     'title' => 'Maddeyi alt grupta doğru cevaplayan öğrenci sayısı',
                     'value' => $totalSumBottom27
                 ],
-                'Pj' => (object)[
+                'Pj' => [
                     'id' => 'Pj',
                     'title' => 'Madde güçlük indeksi',
                     'value' => $Pj
                 ],
-                'Sj2' => (object)[
+                'Sj2' => [
                     'id' => 'Sj2',
                     'title' => 'Madde varyansı',
                     'value' => $Sj2
                 ],
-                'rjx' => (object)[
+                'rjx' => [
                     'id' => 'rjx',
                     'title' => 'Madde ayırıcılık gücü',
                     'value' => $rjx
                 ],
-                'SS' => (object)[
+                'SS' => [
                     'id' => 'SS',
                     'title' => 'Standart sapma',
                     'value' => $SS
                 ],
-                'ri' => (object)[
+                'ri' => [
                     'id' => 'ri',
                     'title' => 'Madde güvenirlik indeksi',
                     'value' => $rjx * $SS
                 ],
-                'stats' => (object)[
+                'stats' => [
                     "_min" => 0,
                     "_max" => 1,
                     "mean" => $arrayStats->mean(),
@@ -161,15 +166,64 @@ function item_analysis($eventData)
             ]
         ];
 
-        unset($columnTotal);
-        unset($columnTop27);
-        unset($columnBottom27);
-        unset($totalSum);
-        unset($totalSumTop27);
-        unset($totalSumBottom27);
-
-        return $result;
     }, $data->question_ids);
+
+    $graphData = [
+        [
+            'id' => 1,
+            'name' => '[Pj>0.90]',
+            'value' => 0,
+            'desc' => 'Eğer etkili bir öğretim varsa tercih edilir'
+        ],
+        [
+            'id' => 2,
+            'name' => '[Pj>=0.60][rjx>=0.20]',
+            'value' => 0,
+            'desc' => 'Tipik iyi bir madde'
+        ],
+        [
+            'id' => 3,
+            'name' => '[Pj>=0.60][rjx<0.20]',
+            'value' => 0,
+            'desc' => 'Üzerinde çalışılması gereken madde'
+        ],
+        [
+            'id' => 4,
+            'name' => '[Pj<0.60][rjx>=0.20]',
+            'value' => 0,
+            'desc' => 'Zor fakat ayırt edici bir madde (Eğer yüksek standartlara sahipseniz bu soru iyidir)'
+        ],
+        [
+            'id' => 5,
+            'name' => '[Pj<0.60][rjx<0.20]',
+            'value' => 0,
+            'desc' => 'Zor ve ayırt edici olmayan madde (Bu madde kullanılamaz)'
+        ],
+    ];
+
+    $Pj = [];
+    foreach ($items as $item) {
+        $Pj[] = $item['data']['Pj']['value'];
+        if ($item['data']['Pj']['value'] > 0.90) {
+            $graphData[0]['value']++;
+        } else if ($item['data']['Pj']['value'] >= 0.60 && $item['data']['rjx']['value'] >= 0.20) {
+            $graphData[1]['value']++;
+        } else if ($item['data']['Pj']['value'] >= 0.60 && $item['data']['rjx']['value'] < 0.20) {
+            $graphData[2]['value']++;
+        } else if ($item['data']['Pj']['value'] < 0.60 && $item['data']['rjx']['value'] >= 0.20) {
+            $graphData[3]['value']++;
+        } else if ($item['data']['Pj']['value'] < 0.60 && $item['data']['rjx']['value'] < 0.20) {
+            $graphData[4]['value']++;
+        }
+    }
+
+    return [
+        'PjAvg' => array_sum($Pj) / count($Pj),
+        'studentCount' => count($data->esssr),
+        'questionCount' => count($data->question_ids),
+        'graphData' => $graphData,
+        'items' => $items,
+    ];
 }
 
 function usortSumDesc(Array $a, Array $b)

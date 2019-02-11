@@ -178,6 +178,9 @@ class ArrayStats
      */
     public function dens_normal($i, $mean, $standard_deviation): float
     {
+        if ($standard_deviation <= 0) {
+            return 0.00;
+        }
         return stats_dens_normal($i, $mean, $standard_deviation);
     }
 }

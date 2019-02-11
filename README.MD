@@ -8,7 +8,7 @@ The basics of using [SAM Cli][1] for AWS Lambda PHP applications.
 3. Select one under the options
     1. Create php binary by following steps in [`doc/create_php_binary.md`][4]
     2. Use prebuilt [Php 7.3.1][5]
-    3. Just put the yml this projects ARN `arn:aws:lambda:eu-central-1:303814004728:layer:aws-lambda-layer-php-7-3-1:3`
+    3. Just put the yml this projects ARN `arn:aws:lambda:eu-central-1:303814004728:layer:aws-lambda-layer-php-7-3-1:6`
 4. Write your serverless application (!) - the default is in `src/handlers/hello.php`
 5. Run `./deploy.sh` to deploy to Lambda
 
@@ -28,8 +28,26 @@ Hello world looks like:
     }
 
 ## Local Tests
-Run `echo "hi" | sam local invoke "HelloPhp73"`
-Result: `{"msg":"hello from PHP 7.3.1","eventData":"hi\n","data":null}`
+#### Input stream as event
+Run:
+`echo "hi" | sam local invoke HelloPhp73`
+Result: 
+`{"msg":"hello from PHP 7.3.1","eventData":"hi\n","data":null}`
+#### File stream as event
+Run:
+`sam local invoke HelloPhp73 --event=events/hello.sampledata.json`
+Result:
+```
+{
+    "msg": "hello from PHP 7.3.1",
+    "eventData": "{\n    \"id\": \"ulbimesm12ym12kmzkzfgkzkuzeyfg\",\n    \"name\": \"Lambda\",\n    \"icon\": \"\u03bb\"\n}",
+    "data": {
+        "id": "ulbimesm12ym12kmzkzfgkzkuzeyfg",
+        "name": "Lambda",
+        "icon": "\u03bb"
+    }
+}
+```
 
 
 [1]: https://github.com/awslabs/aws-sam-cli

@@ -36,12 +36,12 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub ${AWS::StackName}-item-analysis
-      Description: This is the statistics function that calculates payload array.
+      Description: This is the statistics function that calculates item analysis of payload object.
       CodeUri: src
       Runtime: provided
       Handler: array.item_analysis
-      MemorySize: 128
-      Timeout: 4
+      MemorySize: 512
+      Timeout: 16
       Tracing: Active
       Layers:
         - 'arn:aws:lambda:eu-central-1:303814004728:layer:aws-lambda-layer-php-7-3-1:6'
