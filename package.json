@@ -1,0 +1,14 @@
+{
+  "name": "magistum-serverless",
+  "version": "1.0.0",
+  "description": "Magistum Serverless Node.js Functions",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "deploy": "sam deploy"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^29.0.0"
+  }
+}

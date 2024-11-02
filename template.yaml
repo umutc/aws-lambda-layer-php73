@@ -1,64 +1,54 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Magistum Serverless PHP 7.3.1
+Description: Magistum Serverless Node.js
 Transform: AWS::Serverless-2016-10-31
 Resources:
-  LayerPhp73:
-    Properties:
-      ContentUri: layer/php
-    Type: AWS::Serverless::LayerVersion
-  HelloPhp73:
+  HelloFunction:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub ${AWS::StackName}-hello
-      Description: This is the hello world function from lambda php 7.3.1 layer
+      Description: This is the hello world function
       CodeUri: src
-      Runtime: provided
-      Handler: hello.hello
+      Runtime: nodejs18.x
+      Handler: hello.handler
       MemorySize: 128
       Timeout: 4
       Tracing: Active
-      Layers:
-        - 'arn:aws:lambda:eu-central-1:303814004728:layer:aws-lambda-layer-php-7-3-1:6'
+
   ArrayStats:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub ${AWS::StackName}-array-stats
       Description: This is the statistics function that calculates payload array.
       CodeUri: src
-      Runtime: provided
+      Runtime: nodejs18.x
       Handler: array.stats
       MemorySize: 128
       Timeout: 4
       Tracing: Active
-      Layers:
-        - 'arn:aws:lambda:eu-central-1:303814004728:layer:aws-lambda-layer-php-7-3-1:6'
+
   ItemAnalysis:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub ${AWS::StackName}-item-analysis
       Description: This is the statistics function that calculates item analysis of payload object.
       CodeUri: src
-      Runtime: provided
-      Handler: array.item_analysis
+      Runtime: nodejs18.x
+      Handler: array.itemAnalysis
       MemorySize: 512
       Timeout: 16
       Tracing: Active
-      Layers:
-        - 'arn:aws:lambda:eu-central-1:303814004728:layer:aws-lambda-layer-php-7-3-1:6'
-        # Layer local test - Ref: LayerPhp73
+
   Info:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub ${AWS::StackName}-info
-      Description: This is the statistics function that calculates payload array.
+      Description: This is the info function that returns runtime information
       CodeUri: src
-      Runtime: provided
+      Runtime: nodejs18.x
       Handler: array.info
       MemorySize: 128
       Timeout: 4
       Tracing: Active
-      Layers:
-        - 'arn:aws:lambda:eu-central-1:303814004728:layer:aws-lambda-layer-php-7-3-1:6'
       Policies:
         - S3ReadPolicy:
             BucketName: magistum-sam
